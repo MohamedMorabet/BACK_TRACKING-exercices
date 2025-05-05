@@ -1,29 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-typedef    struct t_city
+typedef struct t_city
 {
     float x, y;
 }   City;
 
-void    swap(int *a, int *b)
+void swap(int *a, int *b)
 {
-    int tmp;
-
-    tmp = *a;
+    int tmp = *a;
     *a = *b;
     *b = tmp;
 }
 
-float    distance(City a, City b)
+float distance(City a, City b)
 {
-    float   dx = a.x - b.x;
-    float   dy = a.y - b.y;
-    return (sqrt(dx * dx + dy * dy));
+    float x = a.x - b.x;
+    float y = a.y - b.y;
+    return (sqrt(x * x + y * y));
 }
 
-void    tsp(City *cities, int *perm, int count, float *dist, int start)
+void    process(City *cities, int *perm, float *dist, int count, int start)
 {
     if (start == count)
     {
@@ -40,25 +38,25 @@ void    tsp(City *cities, int *perm, int count, float *dist, int start)
     for (int i = start; i < count; i++)
     {
         swap(&perm[start], &perm[i]);
-        tsp(cities, perm, count, dist, start + 1);
+        process(cities, perm, dist, count, start + 1);
         swap(&perm[start], &perm[i]);
     }
 }
 
 int main(int ac, char **av)
 {
-    float dist; 
     City cities[11];
     int perm[11];
+    float dist;
     int count = 0;
 
     while (count < 11 && fscanf(stdin, "%f, %f\n", &cities[count].x, &cities[count].y) == 2)
     {
         perm[count] = count;
-        count++;
+        count ++;
     }
     dist = 1e9;
-    tsp(cities, perm, count, &dist, 0);
-    printf("the min distance : %.2f\n", dist);
+    process(cities, perm, &dist, count, 0);
+    printf("%.2f\n", dist);
     return 0;
 }
