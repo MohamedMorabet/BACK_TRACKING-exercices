@@ -157,7 +157,6 @@ int ft_scanf(const char *format, ...)
     return ret;
 }
 
-
 int main()
 {
     int num;
